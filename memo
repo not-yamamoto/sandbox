@@ -1,0 +1,14 @@
+
+import string
+
+def format_number(n):
+    if n <= 9999:
+        return str(n)
+
+    offset = n - 10000
+    block = offset // 1000
+    num = offset % 1000 + 1
+
+    letter = string.ascii_uppercase[block]
+
+    return f"{letter}{num:04d}"

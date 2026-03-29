@@ -12,3 +12,37 @@ def format_number(n):
     letter = string.ascii_uppercase[block]
 
     return f"{letter}{num:04d}"
+
+SELECT DISTINCT fghij
+FROM table1
+WHERE abcde IN ('aaa', 'bbb', 'ccc')
+  AND pqrs = 'DDDD'
+
+INTERSECT
+
+SELECT DISTINCT fghij
+FROM table2
+WHERE abcde IN ('aaa', 'bbb', 'ccc')
+  AND pqrs = 'DDDD';
+
+
+SELECT
+    id,
+    a,
+    b,
+    c,
+    name,
+    address,
+    phone,
+    email,
+    age
+FROM customer_table
+WHERE
+    NOT (
+        id IS NULL
+        AND name IS NULL
+        AND address IS NULL
+        AND phone IS NULL
+        AND email IS NULL
+        AND age IS NULL
+    );

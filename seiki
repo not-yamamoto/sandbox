@@ -1,0 +1,25 @@
+import re
+
+keys = ["室名", "名称", "面積", "天井高", "床仕上", "壁仕上"]
+
+def normalize(text):
+    text = text.replace("　", " ")
+    text = re.sub(r"[ \t]+", " ", text)
+    text = text.replace("：", ":")
+    return text.strip()
+
+def extract_pairs(lines):
+    rows = []
+    for line in lines:
+        line = normalize(line)
+        for key in keys:
+            if key in line:
+                m = re.search(rf"{re.escape(key)}\s*[: ]\s*(.+)$", line)
+                if m:
+                    rows.append((key, m.group(1).strip()))
+                else:
+                    after = line.split(key, 1)[1].strip()
+                    if after:
+                        rows.append((key, after))
+                break
+    return rows

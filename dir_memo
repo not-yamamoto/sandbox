@@ -1,0 +1,96 @@
+gnn_cvd_project/
+├── configs/                     # 実験設定（すべてここで切替）
+│   ├── base.yaml
+│   ├── model/
+│   │   ├── mpnn.yaml
+│   │   ├── graph_transformer.yaml
+│   │   └── temporal_transformer.yaml
+│   ├── task/
+│   │   ├── node.yaml
+│   │   ├── edge.yaml
+│   │   └── graph.yaml
+│   └── physics/
+│       ├── none.yaml
+│       ├── conservation.yaml
+│       └── smoothness.yaml
+│
+├── data/                        # データ（外部/中間）
+│   ├── raw/                     # OpenFOAM, METR-LAなど
+│   ├── processed/               # GraphTensor化済み
+│   └── cache/                   # 前処理キャッシュ
+│
+├── src/
+│   ├── dataset/                 # データ生成・ロード
+│   │   ├── builder.py           # GraphTensor生成
+│   │   ├── window.py            # 時系列window化
+│   │   └── loader.py            # tf.data pipeline
+│   │
+│   ├── models/                  # モデル本体（差し替え可能）
+│   │   ├── backbone/
+│   │   │   ├── mpnn.py
+│   │   │   ├── graph_transformer.py
+│   │   │   └── base.py
+│   │   │
+│   │   ├── temporal/
+│   │   │   ├── gru.py
+│   │   │   ├── transformer.py
+│   │   │   └── base.py
+│   │   │
+│   │   ├── heads/
+│   │   │   ├── node.py
+│   │   │   ├── edge.py
+│   │   │   ├── graph.py
+│   │   │   └── common.py
+│   │   │
+│   │   └── model.py             # 全体統合（Backbone + Temporal + Head）
+│   │
+│   ├── physics/                 # 物理制約（最重要）
+│   │   ├── constraints.py       # hard constraint（非負など）
+│   │   ├── residuals.py         # 物理残差計算
+│   │   └── losses.py            # physics loss
+│   │
+│   ├── losses/                  # 損失関数（分離重要）
+│   │   ├── data_loss.py
+│   │   ├── multi_task.py
+│   │   └── weighting.py
+│   │
+│   ├── training/                # 学習ループ
+│   │   ├── trainer.py
+│   │   ├── train_step.py
+│   │   └── evaluator.py
+│   │
+│   ├── inference/               # 推論
+│   │   ├── predictor.py
+│   │   └── rollout.py           # 時系列展開
+│   │
+│   ├── visualization/           # 可視化
+│   │   ├── graph_viz.py
+│   │   ├── temporal_plot.py
+│   │   └── error_analysis.py
+│   │
+│   └── utils/
+│       ├── config.py
+│       ├── logger.py
+│       └── seed.py
+│
+├── scripts/                     # 実行エントリ
+│   ├── train.py
+│   ├── evaluate.py
+│   └── infer.py
+│
+├── experiments/                 # 実験ログ
+│   ├── exp_001/
+│   │   ├── config.yaml
+│   │   ├── model.ckpt
+│   │   └── metrics.json
+│
+├── notebooks/                   # 検証・可視化
+│   └── analysis.ipynb
+│
+├── tests/                       # ユニットテスト（重要）
+│   ├── test_dataset.py
+│   ├── test_model.py
+│   └── test_physics.py
+│
+├── requirements.txt
+└── README.md
